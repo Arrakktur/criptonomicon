@@ -1,0 +1,48 @@
+/* HEADER */
+.header{
+    width: 100%;
+    border-bottom: 1px solid #000;
+    padding-bottom: 20px;
+}
+
+.header__wrapper{
+    width: 200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.header__title{
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.header__description{
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.header__input{
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.header__button{
+    padding: 5px
+}
+
+/* CARDS */
+.cards{
+    display: flex;
+    border-bottom: 1px solid #000;
+}
+
+.card{
+    padding: 20px;
+    border: 1px solid #000;
+    margin: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
