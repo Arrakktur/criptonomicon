@@ -1,7 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+
+.container{
+    width: 95%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.errorText{
+    width: 100%;
+    text-align: center;
+    background-color: #fa1d1d;
+    color: #000;
+    padding: 5px;
+    border: 3px solid rgb(160, 0, 0);
+}
+
 /* HEADER */
 .header{
     width: 100%;
-    border-bottom: 1px solid #000;
     padding-bottom: 20px;
 }
 
@@ -30,19 +48,46 @@
 }
 
 .header__button{
-    padding: 5px
+    padding: 5px;
+    color: #fff;
+    background-color: #5A009D;
+    cursor: pointer;
 }
 
 /* CARDS */
 .cards{
     display: flex;
+    justify-content: center;
+    border-top: 1px solid #000;
     border-bottom: 1px solid #000;
+    width: 100%;
 }
 
 .card{
     padding: 20px;
-    border: 1px solid #000;
+    border: 1px solid #5A009D;
     margin: 20px;
-    border-radius: 5px;
+    border-radius: 20px;
     text-align: center;
+    cursor: pointer;
+    min-width: 120px;
+}
+
+.card__active{
+    border-width: 4px;
+}
+
+/* STATUS */
+.status{
+    position: relative;
+}
+.status__close{
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.status__info__title{
+    text-decoration: underline;
 }
