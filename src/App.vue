@@ -72,8 +72,9 @@
             {{ getWeather(sel.name) }}
             <h4 class="status__info__title">OpenWeather</h4>
             <p class="status__info__description">
-              Город: {{ weather.city }}<br>
+              Город: {{ weather.name }} ({{ weather.coord.lon }}, {{ weather.coord.lat }})<br>
               Температура: {{ weather.main.temp }} ℃<br>
+
             </p>
           </div>
         </div>
@@ -149,15 +150,19 @@ export default {
     },
 
     getWeather(city){
-
-      let data = fetch(this.http_request + city + this.token_openweather)
+      fetch(this.http_request + city + this.token_openweather)
         .then(response => response.json())
         .then(data => {
-          this.weather.city = data.name;
+          this.weather.name = data.name;
+          this.weather.coord.lon = data.coord.lon;
+          this.weather.coord.lat = data.coord.lat;
+          this.weather.weather.main = data.weather.main;
+          this.weather.weather.description = data.weather.description;
+          this.weather.weather.icon = data.weather.icon;
           this.weather.main.temp = Math.round(data.main.temp - 273.15);
-
+          this.weather.main.feels_like = Math.round(data.main.feels_like - 273.15);
+          this.weather.main.pressure = data.main.pressure;
         });
-      return data;
     },
 
     deleteCity(city){
