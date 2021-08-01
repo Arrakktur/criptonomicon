@@ -43,7 +43,7 @@
             {{ city.name }}
           </h3>
           <p class="card__description">
-            {{ city.temp}} ℃
+            - ℃
           </p>
           <button 
             class="card__button"
@@ -69,13 +69,11 @@
         </span>
         <div class="status__infoWrap">
           <div class="status__info">
-            <h4 class="status__info__title">GISMETEO</h4>
+            {{ getWeather(sel.name) }}
+            <h4 class="status__info__title">OpenWeather</h4>
             <p class="status__info__description">
-              Температура: 30℃
-              {{ getWeather(sel.code) }}
-            </p>
-            <p class="status__info__description">
-              Город: {{ weather.city }}
+              Город: {{ weather.city }}<br>
+              Температура: {{ weather.main.temp }} ℃<br>
             </p>
           </div>
         </div>
@@ -98,35 +96,68 @@ export default {
       ticket: '',
       error_text: '',
       cites: [
-        {name: 'Тула', temp: '-', code: 'Tula'},
-        {name: 'Москва', temp: '-', code: 'Moscow'},
+        {name: 'Тула'},
+        {name: 'Москва'},
         ],
       sel: null,
       weather: {
-        code: '-',
-        city: '-',
-        weather: '-',
-        temp: '-',
-        feels_like: '-',
-        temp_min: '-',
-        temp_max: '-',
-        humidity: '-',
-        grnd_level: '-',
-        wind: '-',
-        rain: '-',
+        coord: {
+          lon: '-',
+          lat: '-',
+        },
+        weather: {
+          main: '-',
+          description: '-',
+          icon: '-',
+        },
+        main: {
+          temp: '-',
+          feels_like: '-',
+          pressure: '-',
+          humidity: '-',
+          temp_min: '-',
+          temp_max: '-',
+          sea_level: '-',
+          grnd_level: '-',
+        },
+        wind: {
+          speed: '-',
+          deg: '-',
+          gust: '-',
+        },
         clouds: '-',
+        rain: '-',
+        snow: '-',
         dt: '-',
+        sys: {
+          sunrise: '-',
+          sunset: '-',
+        },
+        name: '-',
       }
     }
   },
+
   methods: {
     addCity(){
       const newCity = {
         name: this.ticket,
-        temp: '-'
       };
 
       this.cites.push(newCity);
+      this.ticket = "";
+    },
+
+    getWeather(city){
+
+      let data = fetch(this.http_request + city + this.token_openweather)
+        .then(response => response.json())
+        .then(data => {
+          this.weather.city = data.name;
+          this.weather.main.temp = Math.round(data.main.temp - 273.15);
+
+        });
+      return data;
     },
 
     deleteCity(city){
@@ -135,18 +166,6 @@ export default {
         this.sel = null;
       }
     },
-
-    getWeather(city){
-      let xhr = new XMLHttpRequest();
-      xhr.open('GET', this.http_request + city + this.token_openweather, false);
-      xhr.send();
-      if (xhr.status != 200) {
-        this.error_text = "Error " + xhr.status;
-      }
-      else{
-        return xhr.responseText;
-      }
-    }
   }
 };
 
