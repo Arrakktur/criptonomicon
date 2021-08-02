@@ -35,7 +35,7 @@
         :class="{
             'card__active': sel === city
           }"
-        @click="sel = city"
+        @click="selectCity(city)"
         class="card"
       >
         <div class="card__wrapper">
@@ -43,7 +43,7 @@
             {{ city.name }}
           </h3>
           <p class="card__description">
-            - ℃
+            {{ city.temp }} ℃
           </p>
           <button 
             class="card__button"
@@ -72,9 +72,12 @@
             {{ getWeather(sel.name) }}
             <h4 class="status__info__title">OpenWeather</h4>
             <p class="status__info__description">
-              Город: {{ weather.name }} ({{ weather.coord.lon }}, {{ weather.coord.lat }})<br>
+              Город: {{ weather.name }} ({{ weather.coord.lon }}, {{ weather.coord.lat }}), {{ weather.weather.description }}<br>
               Температура: {{ weather.main.temp }} ℃<br>
-
+              Ощущается как: {{ weather.main.feels_like }} ℃<br>
+              Атмосферное давление: {{ weather.main.pressure }}<br>
+              Влажность: {{ weather.main.humidity }}<br>
+              Скорость ветра: {{ weather.wind.speed }}
             </p>
           </div>
         </div>
@@ -97,8 +100,8 @@ export default {
       ticket: '',
       error_text: '',
       cites: [
-        {name: 'Тула'},
-        {name: 'Москва'},
+        {name: 'Тула', temp: '-'},
+        {name: 'Москва', temp: '-'},
         ],
       sel: null,
       weather: {
@@ -107,32 +110,16 @@ export default {
           lat: '-',
         },
         weather: {
-          main: '-',
           description: '-',
-          icon: '-',
         },
         main: {
           temp: '-',
           feels_like: '-',
           pressure: '-',
           humidity: '-',
-          temp_min: '-',
-          temp_max: '-',
-          sea_level: '-',
-          grnd_level: '-',
         },
         wind: {
           speed: '-',
-          deg: '-',
-          gust: '-',
-        },
-        clouds: '-',
-        rain: '-',
-        snow: '-',
-        dt: '-',
-        sys: {
-          sunrise: '-',
-          sunset: '-',
         },
         name: '-',
       }
@@ -144,7 +131,7 @@ export default {
       const newCity = {
         name: this.ticket,
       };
-
+ 
       this.cites.push(newCity);
       this.ticket = "";
     },
@@ -156,13 +143,18 @@ export default {
           this.weather.name = data.name;
           this.weather.coord.lon = data.coord.lon;
           this.weather.coord.lat = data.coord.lat;
-          this.weather.weather.main = data.weather.main;
-          this.weather.weather.description = data.weather.description;
-          this.weather.weather.icon = data.weather.icon;
           this.weather.main.temp = Math.round(data.main.temp - 273.15);
           this.weather.main.feels_like = Math.round(data.main.feels_like - 273.15);
           this.weather.main.pressure = data.main.pressure;
+          this.weather.main.humidity = data.main.humidity;
+          this.weather.wind.speed = data.wind.speed;
+          this.weather.weather.description = data.weather[0].description;
         });
+    },
+
+    selectCity(city){
+      this.sel = city;
+      this.getWeather(city.name);
     },
 
     deleteCity(city){
@@ -174,6 +166,4 @@ export default {
   }
 };
 
-</script>
-
-<style src="./app.css"></style>
+</script><style src="./app.css"></style>
