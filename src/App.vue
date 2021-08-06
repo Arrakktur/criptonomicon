@@ -43,7 +43,6 @@
             {{ city.name }}
           </h3>
           <p class="card__description">
-            {{ city.temp }} ℃
           </p>
           <button 
             class="card__button"
@@ -127,7 +126,34 @@ export default {
   },
 
   methods: {
+    clear(){
+      this.error_text = '';
+    },
+
+    checkTicket(ticket){
+      let res = false;
+
+      this.cites.forEach((item) => {
+        if (ticket == item.name && !res){
+          res = true;
+        }
+      });
+
+      return res;
+    },
+
     addCity(){
+      this.clear();
+
+      if (this.ticket == ''){
+        return;
+      }
+
+      if (this.checkTicket(this.ticket)){
+        this.error_text = "Такой город уже добавлен";
+        return;
+      }
+
       const newCity = {
         name: this.ticket,
       };
